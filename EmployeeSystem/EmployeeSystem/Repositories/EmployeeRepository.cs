@@ -18,14 +18,14 @@ namespace EmployeeSystem.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteEmployeeAsync(Employee employee)
+        public async Task DeleteEmployeeAsync(int id)
         {
-            var employeeEntity = await _context.Employees.FindAsync(employee.Id);
+            var employeeEntity = await _context.Employees.FindAsync(id);
             if (employeeEntity == null)
             {
-                throw new KeyNotFoundException($"Employee with id : {employee.Id} was not found");
+                throw new KeyNotFoundException($"Employee with id : {id} was not found");
             }
-            _context.Employees.Remove(employee); // Remove method is synchronous
+            _context.Employees.Remove(employeeEntity); // Remove method is synchronous
             await _context.SaveChangesAsync(); // Save changes asynchronously
         }
 
@@ -34,9 +34,9 @@ namespace EmployeeSystem.Repositories
            return await _context.Employees.ToListAsync();
         }
 
-        public async Task<IEnumerable<Employee?>> GetByIdAsync(int id)
+        public async Task<Employee?> GetByIdAsync(int id)
         {
-            return (IEnumerable<Employee>)await _context.Employees.FindAsync(id);
+            return (Employee)await _context.Employees.FindAsync(id);
         }
 
         public async Task UpdateEmployeeAsync(Employee employee)
